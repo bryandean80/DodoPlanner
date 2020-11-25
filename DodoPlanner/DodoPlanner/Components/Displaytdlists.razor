@@ -1,0 +1,27 @@
+﻿@using DodoPlanner.Services
+@using DodoPlanner.Models
+@using Microsoft.AspNetCore.Components.Web
+@using DodoPlanner.Pages
+@inject JsonFileTdListService tdlistservice
+
+@foreach (var tdlist in tdlistservice.GetTdLists())
+{
+    <div>
+        <span>
+            <a href="/ToDoList/@tdlist.Title">@tdlist.Title</a>
+        </span>
+    </div>
+}
+<input @bind="newListTitle" />
+<button @onclick="(e => AddList())">Add New List </button>
+
+@code {
+    string newListTitle { get; set; }
+
+    void AddList()
+    {
+        tdlistservice.AddTdList(newListTitle);
+        newListTitle = string.Empty;
+    }
+
+}

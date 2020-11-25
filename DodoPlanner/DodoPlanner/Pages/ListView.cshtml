@@ -1,0 +1,7 @@
+﻿@page "/ToDoList/{ListTitle}"
+@using DodoPlanner.Components
+@model ListViewModel
+
+
+@(await Html.RenderComponentAsync<ListView>(RenderMode.ServerPrerendered, new { ListTitle = @RouteData.Values["ListTitle"] }))
+

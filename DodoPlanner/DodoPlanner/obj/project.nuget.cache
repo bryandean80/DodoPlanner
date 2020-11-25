@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "Epm8GQkRNGYDDzqpTlpJtRroMjvaKEn1dHqsjAXbfJyjNuy8nKYLMaDGzzq3JDP2CE3PQyKuM0gibFMJpRlDxQ==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\bbdea\\source\\repos\\DodoPlanner\\DodoPlanner\\DodoPlanner.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\bbdea\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

@@ -1,0 +1,60 @@
+﻿@using DodoPlanner.Services
+@using DodoPlanner.Models
+@using Microsoft.AspNetCore.Components.Web
+@using DodoPlanner.Pages
+@inject JsonFileTdListService tdlistservice
+
+<h3>@ListTitle</h3>
+
+ 
+@foreach (var task in tdlistservice.GetList(ListTitle).tasks)
+{
+    <div>
+        @if (task.completed)
+        {
+            style = "text-decoration: line-through;";
+        }
+        else
+        {
+            style = string.Empty;
+        }
+        <p style="@style">
+            @task.title  @task.duedate.ToString("MM/dd/yyyy") <input type="checkbox" checked="@task.completed" @onclick="( e=> ToggleCompleted(task.title))" />
+        </p>
+        
+    </div>
+}
+<input @bind="newtasktitle" />
+<input type="date" @bind ="newduedate" />
+<button @onclick="(e => AddNewTask())">Add New Task </button>
+
+@code {
+
+    public string style { get; set; }
+
+    [Parameter]
+    public string ListTitle { get; set; }
+
+    string newtasktitle { get;
+        set; }
+    DateTime newduedate { get; set; }
+
+    void AddNewTask()
+    {
+        var newTask = new task { title = newtasktitle, duedate = newduedate};
+        tdlistservice.AddTask(newTask, ListTitle);
+        newtasktitle = string.Empty;
+        newduedate = DateTime.Now;
+    }
+
+    public void ToggleCompleted(string taskName)
+    {
+        tdlistservice.ToggleCompleted(ListTitle, taskName);
+    }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        newduedate = DateTime.Now;
+    }
+}

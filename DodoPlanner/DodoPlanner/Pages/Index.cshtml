@@ -1,0 +1,14 @@
+﻿@page
+@using DodoPlanner.Components 
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">My Lists</h1>
+</div>
+
+
+@(await Html.RenderComponentAsync<Displaytdlists>(RenderMode.ServerPrerendered))
+
