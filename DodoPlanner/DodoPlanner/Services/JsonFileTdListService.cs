@@ -24,14 +24,20 @@ namespace DodoPlanner.Services
             get { return Path.Combine(WebHostEnvironment.WebRootPath, "data", "tdlists.json"); }
         }
 
-        public void ToggleCompleted(Guid ListId, string TaskName)
+        public void ToggleCompleted(Guid ListId, Guid TaskId)
         {
             var tdlist = GetList(ListId);
-            var task = tdlist.tasks[tdlist.tasks.FindIndex(x => x.title == TaskName)];
+            var task = tdlist.tasks[tdlist.tasks.FindIndex(x => x.TaskID == TaskId)];
             task.completed = !task.completed;
             writeJson(tdlist);
         }
 
+        public void RemoveTask(Guid taskId, Guid ListId)
+        {
+            var tdlist = GetList(ListId);
+            tdlist.tasks.Remove(tdlist.tasks.First(x => x.TaskID == taskId));
+            writeJson(tdlist);
+        }
         public IEnumerable<ToDoList> GetTdLists()
         {
             var tdlists = new List<ToDoList>();
@@ -91,6 +97,14 @@ namespace DodoPlanner.Services
             tdlists[tdlists.FindIndex(x => x.ListID == toDoList.ListID)] = toDoList;
             writeJson(tdlists);
         }
+        public void writeJson(task task, Guid ListId)
+        {
+            var tdlists = GetTdLists().ToList();
+            var tdlist = tdlists.First(x => x.ListID == ListId);
+            tdlist.tasks[tdlist.tasks.FindIndex(x => x.TaskID == task.TaskID)] = task;
+            writeJson(tdlist);
+        }
+
 
     }
 }

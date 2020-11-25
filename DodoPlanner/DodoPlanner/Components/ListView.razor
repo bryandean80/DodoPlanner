@@ -2,15 +2,17 @@
 @using DodoPlanner.Models
 @using Microsoft.AspNetCore.Components.Web
 @using DodoPlanner.Pages
+@using System.Globalization 
 @inject JsonFileTdListService tdlistservice
 
 <h3>@tdlistservice.GetList(theListId).Title </h3>
 
- 
+<p>Edit Tasks: <input type="checkbox" @onclick="(e => editMode = !editMode)" /></p>
+
 @foreach (var task in tdlistservice.GetList(theListId).tasks)
 {
     <div>
-        @if (task.completed)
+        @if (task.completed && !editMode)
         {
             style = "text-decoration: line-through;";
         }
@@ -19,7 +21,20 @@
             style = string.Empty;
         }
         <p style="@style">
-            @task.title  @task.duedate.ToString("MM/dd/yyyy") <input type="checkbox" checked="@task.completed" @onclick="( e=> ToggleCompleted(task.title))" />
+            @if (editMode)
+            {
+                <input value="@task.title" @onchange="(e => {task.title = e.Value.ToString(); tdlistservice.writeJson(task, theListId);})" />
+                <input type ="date" value="@task.duedate.ToString(format)" @onchange="(e => {task.duedate = DateTime.ParseExact(e.Value.ToString(), format, CultureInfo.InvariantCulture); tdlistservice.writeJson(task, theListId);})" />
+                <input type="checkbox" checked="@task.completed" @onclick="(e => ToggleCompleted(task.TaskID))" />
+
+                <button @onclick="(e => RemoveTask(task.TaskID))">Remove Task </button>
+            }
+            else
+            {
+                <span>
+                    @task.title  @task.duedate.ToString("MM/dd/yyyy") <input type="checkbox" checked="@task.completed" @onclick="(e => ToggleCompleted(task.TaskID))" />
+                </span> 
+            }
         </p>
         
     </div>
@@ -29,6 +44,9 @@
 <button @onclick="(e => AddNewTask())">Add New Task </button>
 
 @code {
+
+    bool editMode { get; set; }
+    string format = "yyyy-MM-dd";
 
     public string style { get; set; }
 
@@ -56,14 +74,20 @@
         newduedate = DateTime.Now;
     }
 
-    public void ToggleCompleted(string taskName)
+    public void ToggleCompleted(Guid TaskId)
     {
-        tdlistservice.ToggleCompleted(theListId, taskName);
+        tdlistservice.ToggleCompleted(theListId, TaskId);
+    }
+
+    public void RemoveTask(Guid TaskId)
+    {
+        tdlistservice.RemoveTask(TaskId, theListId);
     }
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
         newduedate = DateTime.Now;
+        editMode = false;
     }
 }
