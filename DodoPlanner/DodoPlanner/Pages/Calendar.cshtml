@@ -1,0 +1,7 @@
+﻿@page "/Calendar/{Month=DateTime.Now.Month}/{Year=DateTime.Now.Year}"
+
+@using DodoPlanner.Components
+
+@model DodoPlanner.Pages.CalendarModel
+
+@(await Html.RenderComponentAsync<Calendar>(RenderMode.ServerPrerendered, new { Month = @RouteData.Values["Month"], Year = @RouteData.Values["Year"] }))

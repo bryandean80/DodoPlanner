@@ -1,0 +1,137 @@
+﻿@using DodoPlanner.Services 
+@inject JsonFileTdListService tdlistservice
+
+<h3>Calendar</h3>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th  colspan="7" style = "text-align: center"> @month.Year.ToString()</th>
+        </tr>
+        <tr>
+            <th><a href="/Calendar/@previousMonth.Month/@previousMonth.Year">@previousMonth.ToString("MMMM")</a></th>
+            <th colspan="5" style="font-size: x-large; text-align: center;">@month.ToString("MMMM")</th>
+            <th><a href=" /Calendar/@nextMonth.Month/@nextMonth.Year">@nextMonth.ToString("MMMM")</a></th>
+        </tr>
+        <tr>
+            @for(int i=0; i < 7; i++)
+            {
+                <th>@Enum.Parse(typeof(DayOfWeek), i.ToString()) </th>
+            }
+        </tr>
+    </thead>
+    @while (!maxDayReached)
+    {
+        <tr>
+            @for(int i = 0; i < 7; i++)
+            {
+                if (i < (int)startingDay && dayOfMonthCounter == 0)
+                {
+                   <td></td>
+                }
+                else
+                {
+                    <td style="text-align: center;">
+                        @(++dayOfMonthCounter) <br />
+                        @foreach(var task in tdlistservice.GetTasksOnDate(month.AddDays(dayOfMonthCounter-1)))
+                        {
+                            if(!task.completed)
+                                @task.title <br>
+                        }
+                    </td>
+                }
+
+                if(dayOfMonthCounter == maxDay)
+                {
+                    maxDayReached = true;
+                    break;
+                }
+            }
+        </tr> 
+    }
+
+</table>
+
+@code {
+    bool maxDayReached;
+    DateTime month { get; set; }
+
+    DateTime nextMonth
+    {
+        get
+        {
+            return month.AddMonths(1);
+        }
+    }
+
+    DateTime previousMonth
+    {
+        get
+        {
+            return month.AddMonths(-1);
+        }
+    }
+
+    DayOfWeek startingDay { get; set; }
+    int maxDay { get; set; }
+    int dayOfMonthCounter { get; set; }
+
+    int monthNum;
+    int yearNum;
+
+    [Parameter]
+    public string Month
+    {
+        get
+        {
+            return monthNum.ToString();
+        }
+        set
+        {
+            int val;
+            bool result = int.TryParse(value, out val);
+            if (result)
+            {
+                monthNum = val;
+            }
+            else
+            {
+                monthNum = DateTime.Now.Month;
+            }
+        }
+    }
+
+    [Parameter]
+    public string Year
+    {
+        get
+        {
+            return yearNum.ToString();
+        }
+        set
+        {
+            int val;
+            bool result = int.TryParse(value, out val);
+            if (result)
+            {
+                yearNum = val;
+            }
+            else
+            {
+                yearNum = DateTime.Now.Year;
+            }
+        }
+    }
+
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        month = new DateTime(yearNum, monthNum, 1);
+        startingDay = month.DayOfWeek;
+        maxDay = month.AddMonths(1).AddDays(-1).Day;
+        maxDayReached = false;
+        dayOfMonthCounter = 0;
+    }
+
+}

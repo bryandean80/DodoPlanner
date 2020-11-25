@@ -86,3 +86,6 @@ C:\Users\bbdea\Documents\DoDoPlanner\DodoPlanner\DodoPlanner\obj\Debug\netcoreap
 C:\Users\bbdea\Documents\DoDoPlanner\DodoPlanner\DodoPlanner\obj\Debug\netcoreapp3.1\DodoPlanner.dll
 C:\Users\bbdea\Documents\DoDoPlanner\DodoPlanner\DodoPlanner\obj\Debug\netcoreapp3.1\DodoPlanner.pdb
 C:\Users\bbdea\Documents\DoDoPlanner\DodoPlanner\DodoPlanner\obj\Debug\netcoreapp3.1\DodoPlanner.genruntimeconfig.cache
+C:\Users\bbdea\Documents\DoDoPlanner\DodoPlanner\DodoPlanner\obj\Debug\netcoreapp3.1\RazorDeclaration\Components\Calendar.razor.g.cs
+C:\Users\bbdea\Documents\DoDoPlanner\DodoPlanner\DodoPlanner\obj\Debug\netcoreapp3.1\Razor\Components\Calendar.razor.g.cs
+C:\Users\bbdea\Documents\DoDoPlanner\DodoPlanner\DodoPlanner\obj\Debug\netcoreapp3.1\Razor\Pages\Calendar.cshtml.g.cs

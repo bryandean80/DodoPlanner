@@ -49,8 +49,25 @@ namespace DodoPlanner.Services
             }
             return tdlists;
         }
-        
+        public List<task> GetAllTasks()
+        {
+            List<task> tasks = new List<task>();
+            var tdlists = GetTdLists();
+            foreach(var tdlist in tdlists)
+            {
+                foreach(var task in tdlist.tasks)
+                {
+                    tasks.Add(task);
+                }
+            }
+            return tasks;
+        }
 
+        public List<task> GetTasksOnDate(DateTime date)
+        {
+            List<task> datetasks = new List<task>();
+            return GetAllTasks().Where(x => x.duedate.Date == date.Date).ToList();
+        }
         public void AddTdList(string title)
         {
             var tdlists = GetTdLists().ToList();
