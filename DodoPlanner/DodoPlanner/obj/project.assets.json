@@ -58,11 +58,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\bbdea\\source\\repos\\DodoPlanner\\DodoPlanner\\DodoPlanner.csproj",
+      "projectUniqueName": "C:\\Users\\bbdea\\Documents\\DoDoPlanner\\DodoPlanner\\DodoPlanner\\DodoPlanner.csproj",
       "projectName": "DodoPlanner",
-      "projectPath": "C:\\Users\\bbdea\\source\\repos\\DodoPlanner\\DodoPlanner\\DodoPlanner.csproj",
+      "projectPath": "C:\\Users\\bbdea\\Documents\\DoDoPlanner\\DodoPlanner\\DodoPlanner\\DodoPlanner.csproj",
       "packagesPath": "C:\\Users\\bbdea\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\bbdea\\source\\repos\\DodoPlanner\\DodoPlanner\\obj\\",
+      "outputPath": "C:\\Users\\bbdea\\Documents\\DoDoPlanner\\DodoPlanner\\DodoPlanner\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\"

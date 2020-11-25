@@ -24,9 +24,9 @@ namespace DodoPlanner.Services
             get { return Path.Combine(WebHostEnvironment.WebRootPath, "data", "tdlists.json"); }
         }
 
-        public void ToggleCompleted(string ListName, string TaskName)
+        public void ToggleCompleted(Guid ListId, string TaskName)
         {
-            var tdlist = GetList(ListName);
+            var tdlist = GetList(ListId);
             var task = tdlist.tasks[tdlist.tasks.FindIndex(x => x.title == TaskName)];
             task.completed = !task.completed;
             writeJson(tdlist);
@@ -51,17 +51,23 @@ namespace DodoPlanner.Services
             tdlists.Add(new ToDoList { Title = title });
             writeJson(tdlists);
         }
-
-        public ToDoList GetList(string listTitle)
-        {
-            var tdlists = GetTdLists();
-            return tdlists.First(x => x.Title == listTitle);
-        }
-
-        public void AddTask(task newtask, string ListTitle)
+        public void RemoveTdList(Guid ListId)
         {
             var tdlists = GetTdLists().ToList();
-            tdlists[tdlists.FindIndex(x => x.Title == ListTitle)].tasks.Add(newtask);
+            tdlists.Remove(tdlists.First(x => x.ListID == ListId));
+            writeJson(tdlists);
+        }
+
+        public ToDoList GetList(Guid ListId)
+        {
+            var tdlists = GetTdLists();
+            return tdlists.First(x => x.ListID == ListId);
+        }
+
+        public void AddTask(task newtask, Guid ListId)
+        {
+            var tdlists = GetTdLists().ToList();
+            tdlists[tdlists.FindIndex(x => x.ListID == ListId)].tasks.Add(newtask);
             
             writeJson(tdlists);
         }
@@ -82,7 +88,7 @@ namespace DodoPlanner.Services
         public void writeJson(ToDoList toDoList)
         {
             var tdlists = GetTdLists().ToList();
-            tdlists[tdlists.FindIndex(x => x.Title == toDoList.Title)] = toDoList;
+            tdlists[tdlists.FindIndex(x => x.ListID == toDoList.ListID)] = toDoList;
             writeJson(tdlists);
         }
 

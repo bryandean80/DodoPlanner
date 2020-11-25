@@ -9,10 +9,12 @@ namespace DodoPlanner.Models
     {
         public string Title { get; set; }
         public List<task> tasks;
+        public Guid ListID { get; set; }
         public ToDoList()
         {
             Title = "new list";
             tasks = new List<task>();
+            ListID = Guid.NewGuid();
         }
     }
 }

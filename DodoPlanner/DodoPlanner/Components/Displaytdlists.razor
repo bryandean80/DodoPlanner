@@ -4,19 +4,38 @@
 @using DodoPlanner.Pages
 @inject JsonFileTdListService tdlistservice
 
+<p>Edit Lists: <input type="checkbox" @onclick="(e => editMode = !editMode)"/></p>
+
 @foreach (var tdlist in tdlistservice.GetTdLists())
 {
     <div>
         <span>
-            <a href="/ToDoList/@tdlist.Title">@tdlist.Title</a>
+
+            @if (editMode)
+            {
+                <input value="@tdlist.Title" @onchange="(e => {
+                                                           tdlist.Title = e.Value.ToString();
+                                                           tdlistservice.writeJson(tdlist);
+                                                       })"/>
+                <button @onclick="(e => RemoveList(tdlist.ListID))">Remove List </button>
+            }
+            else
+            {
+                <a href="/ToDoList/@tdlist.ListID.ToString()">@tdlist.Title</a>
+            }
         </span>
     </div>
 }
 <input @bind="newListTitle" />
 <button @onclick="(e => AddList())">Add New List </button>
 
+
+
+
 @code {
     string newListTitle { get; set; }
+
+    bool editMode { get; set; }
 
     void AddList()
     {
@@ -24,4 +43,14 @@
         newListTitle = string.Empty;
     }
 
+    void RemoveList(Guid ListId)
+    {
+        tdlistservice.RemoveTdList(ListId);
+    }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        editMode = false;
+    }
 }

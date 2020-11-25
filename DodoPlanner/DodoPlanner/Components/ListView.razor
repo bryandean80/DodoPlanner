@@ -4,10 +4,10 @@
 @using DodoPlanner.Pages
 @inject JsonFileTdListService tdlistservice
 
-<h3>@ListTitle</h3>
+<h3>@tdlistservice.GetList(theListId).Title </h3>
 
  
-@foreach (var task in tdlistservice.GetList(ListTitle).tasks)
+@foreach (var task in tdlistservice.GetList(theListId).tasks)
 {
     <div>
         @if (task.completed)
@@ -32,8 +32,17 @@
 
     public string style { get; set; }
 
+    private Guid theListId;
+
     [Parameter]
-    public string ListTitle { get; set; }
+    public string ListId {
+        get => theListId.ToString();
+        set
+        {
+            theListId = Guid.Parse(value);
+        }
+    }
+
 
     string newtasktitle { get;
         set; }
@@ -42,14 +51,14 @@
     void AddNewTask()
     {
         var newTask = new task { title = newtasktitle, duedate = newduedate};
-        tdlistservice.AddTask(newTask, ListTitle);
+        tdlistservice.AddTask(newTask, theListId);
         newtasktitle = string.Empty;
         newduedate = DateTime.Now;
     }
 
     public void ToggleCompleted(string taskName)
     {
-        tdlistservice.ToggleCompleted(ListTitle, taskName);
+        tdlistservice.ToggleCompleted(theListId, taskName);
     }
 
     protected override void OnInitialized()
