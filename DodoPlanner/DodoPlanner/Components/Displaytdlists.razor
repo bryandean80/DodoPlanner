@@ -3,31 +3,42 @@
 @using Microsoft.AspNetCore.Components.Web
 @using DodoPlanner.Pages
 @inject JsonFileTdListService tdlistservice
+<center>
+<p>Edit Lists: <input type="checkbox" @onclick="(e => editMode = !editMode)" /></p>
 
-<p>Edit Lists: <input type="checkbox" @onclick="(e => editMode = !editMode)"/></p>
-
-@foreach (var tdlist in tdlistservice.GetTdLists())
-{
-    <div>
-        <span>
-
+<table class="table table-borderless" style="width: 50%; text-align: center;">
+    <tbody>
+    @foreach (var tdlist in tdlistservice.GetTdLists())
+    {
+        <tr><td>
             @if (editMode)
             {
-                <input value="@tdlist.Title" @onchange="(e => {
-                                                           tdlist.Title = e.Value.ToString();
-                                                           tdlistservice.writeJson(tdlist);
-                                                       })"/>
-                <button @onclick="(e => RemoveList(tdlist.ListID))">Remove List </button>
+                <div class="input-group">
+                    <input class="form-control" value="@tdlist.Title" @onchange="(e => {
+                                                               tdlist.Title = e.Value.ToString();
+                                                               tdlistservice.writeJson(tdlist);
+                                                           })" />
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-danger btn-sm" @onclick="(e => RemoveList(tdlist.ListID))"> ╳ </button>
+                    </div>
+                </div>
             }
             else
             {
-                <a href="/ToDoList/@tdlist.ListID.ToString()">@tdlist.Title</a>
+                <a class="btn btn-outline-secondary btn-sm" style="width: 50%;" href="/ToDoList/@tdlist.ListID.ToString()">@tdlist.Title</a>
             }
-        </span>
+        </td></tr>
+    }
+    </tbody>
+</table>
+<div class="input-group" style="width: 50%;">
+    <input class="form-control" @bind="newListTitle" />
+    <div class="input-group-append">
+        <button class="btn btn-outline-success" @onclick="(e => AddList())">Add New List </button>
     </div>
-}
-<input @bind="newListTitle" />
-<button @onclick="(e => AddList())">Add New List </button>
+</div>
+</center>
+
 
 
 

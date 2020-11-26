@@ -25,6 +25,7 @@
       "DodoPlanner/1.0.0": {
         "dependencies": {
           "Newtonsoft.Json": "12.0.3",
+          "Twitter.Bootstrap.Bootswatch.Darkly": "3.2.0",
           "Microsoft.AspNetCore.Antiforgery": "3.1.0.0",
           "Microsoft.AspNetCore.Authentication.Abstractions": "3.1.0.0",
           "Microsoft.AspNetCore.Authentication.Cookies": "3.1.0.0",
@@ -326,6 +327,7 @@
           "lib/netstandard2.0/Newtonsoft.Json.dll": {}
         }
       },
+      "Twitter.Bootstrap.Bootswatch.Darkly/3.2.0": {},
       "Microsoft.AspNetCore.Antiforgery/3.1.0.0": {
         "compile": {
           "Microsoft.AspNetCore.Antiforgery.dll": {}
@@ -2032,6 +2034,13 @@
       "sha512": "sha512-6mgjfnRB4jKMlzHSl+VD+oUc1IebOZabkbyWj2RiTgWwYPPuaK1H97G1sHqGwPlS5npiF5Q0OrxN1wni2n5QWg==",
       "path": "newtonsoft.json/12.0.3",
       "hashPath": "newtonsoft.json.12.0.3.nupkg.sha512"
+    },
+    "Twitter.Bootstrap.Bootswatch.Darkly/3.2.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-HeBurhIeTVzLG+K2ADBgvVX8ezTkJ1wYZ7Ww1d+XLQio0/mM+VxK/8lldORthG9UjReG9+5TQSIpsB9+1chDIw==",
+      "path": "twitter.bootstrap.bootswatch.darkly/3.2.0",
+      "hashPath": "twitter.bootstrap.bootswatch.darkly.3.2.0.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Antiforgery/3.1.0.0": {
       "type": "referenceassembly",

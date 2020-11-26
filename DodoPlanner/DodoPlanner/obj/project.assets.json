@@ -10,6 +10,9 @@
         "runtime": {
           "lib/netstandard2.0/Newtonsoft.Json.dll": {}
         }
+      },
+      "Twitter.Bootstrap.Bootswatch.Darkly/3.2.0": {
+        "type": "package"
       }
     }
   },
@@ -44,11 +47,25 @@
         "newtonsoft.json.nuspec",
         "packageIcon.png"
       ]
+    },
+    "Twitter.Bootstrap.Bootswatch.Darkly/3.2.0": {
+      "sha512": "HeBurhIeTVzLG+K2ADBgvVX8ezTkJ1wYZ7Ww1d+XLQio0/mM+VxK/8lldORthG9UjReG9+5TQSIpsB9+1chDIw==",
+      "type": "package",
+      "path": "twitter.bootstrap.bootswatch.darkly/3.2.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "content/Content/bootstrap.darkly.css",
+        "content/Content/bootstrap.darkly.min.css",
+        "twitter.bootstrap.bootswatch.darkly.3.2.0.nupkg.sha512",
+        "twitter.bootstrap.bootswatch.darkly.nuspec"
+      ]
     }
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
-      "Newtonsoft.Json >= 12.0.3"
+      "Newtonsoft.Json >= 12.0.3",
+      "Twitter.Bootstrap.Bootswatch.Darkly >= 3.2.0"
     ]
   },
   "packageFolders": {
@@ -96,6 +113,10 @@
           "Newtonsoft.Json": {
             "target": "Package",
             "version": "[12.0.3, )"
+          },
+          "Twitter.Bootstrap.Bootswatch.Darkly": {
+            "target": "Package",
+            "version": "[3.2.0, )"
           }
         },
         "imports": [

@@ -1,6 +1,6 @@
 ﻿@using DodoPlanner.Services 
 @inject JsonFileTdListService tdlistservice
-
+<center>
 <h3>Calendar</h3>
 <table class="table table-bordered">
     <thead>
@@ -8,14 +8,14 @@
             <th  colspan="7" style = "text-align: center"> @month.Year.ToString()</th>
         </tr>
         <tr>
-            <th><a href="/Calendar/@previousMonth.Month/@previousMonth.Year">@previousMonth.ToString("MMMM")</a></th>
+            <th style="text-align:center"><a class ="btn btn-outline-secondary" href="/Calendar/@previousMonth.Month/@previousMonth.Year">@previousMonth.ToString("MMMM")</a></th>
             <th colspan="5" style="font-size: x-large; text-align: center;">@month.ToString("MMMM")</th>
-            <th><a href=" /Calendar/@nextMonth.Month/@nextMonth.Year">@nextMonth.ToString("MMMM")</a></th>
+            <th style="text-align:center"><a class ="btn btn-outline-secondary" href=" /Calendar/@nextMonth.Month/@nextMonth.Year">@nextMonth.ToString("MMMM")</a></th>
         </tr>
         <tr>
             @for(int i=0; i < 7; i++)
             {
-                <th>@Enum.Parse(typeof(DayOfWeek), i.ToString()) </th>
+                <th style="text-align:center">@Enum.Parse(typeof(DayOfWeek), i.ToString()) </th>
             }
         </tr>
     </thead>
@@ -50,6 +50,7 @@
     }
 
 </table>
+</center>
 
 @code {
     bool maxDayReached;
