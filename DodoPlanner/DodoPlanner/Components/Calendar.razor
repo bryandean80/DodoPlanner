@@ -34,8 +34,10 @@
                         @(++dayOfMonthCounter) <br />
                         @foreach(var task in tdlistservice.GetTasksOnDate(month.AddDays(dayOfMonthCounter-1)))
                         {
-                            if(!task.completed)
+                            if (!task.completed)
+                            {
                                 @task.title <br>
+                            }
                         }
                     </td>
                 }
