@@ -13,12 +13,14 @@ namespace DodoPlanner.Models
         public DateTime duedate { get; set; }
         public Boolean completed { get; set; }
         public Guid TaskID { get; set; }
+        public Guid ListId { get; set; }
         public task()
         {
             title = "new task";
             completed = false;
             TaskID = Guid.NewGuid();
             duedate = DateTime.Now;
+            ListId = Guid.Empty;
         }
     }
 }

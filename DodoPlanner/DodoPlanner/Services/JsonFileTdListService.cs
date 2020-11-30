@@ -23,6 +23,10 @@ namespace DodoPlanner.Services
         {
             get { return Path.Combine(WebHostEnvironment.WebRootPath, "data", "tdlists.json"); }
         }
+        private string CategoryJsonFileName
+        {
+            get { return Path.Combine(WebHostEnvironment.WebRootPath, "data", "categories.json"); }
+        }
 
         public void ToggleCompleted(Guid ListId, Guid TaskId)
         {
@@ -62,16 +66,63 @@ namespace DodoPlanner.Services
             }
             return tasks;
         }
+        public IEnumerable<Category> GetCategories()
+        {
+            var categories = new List<Category>();
+            using (StreamReader file = new StreamReader(CategoryJsonFileName))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                categories = (List<Category>)serializer.Deserialize(file, typeof(IEnumerable<Category>));
+
+            }
+            return categories;
+        }
+
+        public void AddCategory(string name, string color)
+        {
+            var categories = GetCategories().ToList();
+            categories.Add(new Category { Name = name, Color = color});
+            CategoryWriteJson(categories);
+        }
+        public void RemoveCategory(Guid catid)
+        {
+            var categories = GetCategories().ToList();
+            var tdlists = GetTdLists().Where(x => x.CategoryId == catid);
+            foreach(var list in tdlists)
+            {
+                RemoveTdList(list.ListID);
+            }
+            categories.Remove(categories.First(x => x.Id == catid));
+            CategoryWriteJson(categories);
+        }
+        public void CategoryWriteJson(IEnumerable<Category> categories)
+        {
+            File.WriteAllText(CategoryJsonFileName, "");
+            using (var outputStream = File.OpenWrite(CategoryJsonFileName))
+            {
+                using (var sw = new StreamWriter(outputStream))
+                {
+                    JsonSerializer serializer = new JsonSerializer();
+                    serializer.Serialize(sw, categories);
+                }
+            }
+        }
+        public void CategoryWriteJson(Category category)
+        {
+            var categories = GetCategories().ToList();
+            categories[categories.FindIndex(x => x.Id == category.Id)] = category;
+            CategoryWriteJson(categories);
+        }
 
         public List<task> GetTasksOnDate(DateTime date)
         {
             List<task> datetasks = new List<task>();
             return GetAllTasks().Where(x => x.duedate.Date == date.Date).ToList();
         }
-        public void AddTdList(string title)
+        public void AddTdList(string title, Guid catid)
         {
             var tdlists = GetTdLists().ToList();
-            tdlists.Add(new ToDoList { Title = title });
+            tdlists.Add(new ToDoList { Title = title, CategoryId = catid});
             writeJson(tdlists);
         }
         public void RemoveTdList(Guid ListId)

@@ -7,6 +7,7 @@
 
     <center>
         <h3>@tdlistservice.GetList(theListId).Title </h3>
+        <h5>@tdlistservice.GetAllTasks().Where(x => x.ListId == theListId).Count() tasks</h5>
 
         <p>Edit Tasks: <input type="checkbox" @onclick="(e => editMode = !editMode)" /></p>
 
@@ -25,20 +26,20 @@
                             {
                                 style = "width: 50%;";
                             }
-                                @if (editMode)
-                                {
-                                    <div class="input-group">
-                                        <input class="form-control" value="@task.title" @onchange="(e => {task.title = e.Value.ToString(); tdlistservice.writeJson(task, theListId);})" />
-                                            <input class="form-control" type="date" value="@task.duedate.ToString(format)" @onchange="(e => {task.duedate = DateTime.ParseExact(e.Value.ToString(), format, CultureInfo.InvariantCulture); tdlistservice.writeJson(task, theListId);})" />
-                                        <div class="input-group-append">
-                                            <button class="btn btn-outline-danger btn-sm" @onclick="(e => RemoveTask(task.TaskID))"> ╳ </button>
-                                        </div>
+                            @if (editMode)
+                            {
+                                <div class="input-group">
+                                    <input class="form-control" value="@task.title" @onchange="(e => {task.title = e.Value.ToString(); tdlistservice.writeJson(task, theListId);})" />
+                                    <input class="form-control" type="date" value="@task.duedate.ToString(format)" @onchange="(e => {task.duedate = DateTime.ParseExact(e.Value.ToString(), format, CultureInfo.InvariantCulture); tdlistservice.writeJson(task, theListId);})" />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-danger btn-sm" @onclick="(e => RemoveTask(task.TaskID))"> ╳ </button>
                                     </div>
-                                }
-                                else
-                                {
-                                    <button class="btn btn-outline-secondary btn-sm" style="@style" @onclick="(e => ToggleCompleted(task.TaskID))"> @task.title  @task.duedate.ToString("MM/dd/yyyy")</button>
-                                }
+                                </div>
+                            }
+                            else
+                            {
+                                <button class="btn btn-outline-secondary btn-sm" style="@style" @onclick="(e => ToggleCompleted(task.TaskID))"> @task.title  @task.duedate.ToString("MM/dd/yyyy")</button>
+                            }
                         </td>
                     </tr>
                 }
@@ -80,7 +81,7 @@
 
         void AddNewTask()
         {
-            var newTask = new task { title = newtasktitle, duedate = newduedate };
+            var newTask = new task { title = newtasktitle, duedate = newduedate , ListId=theListId};
             tdlistservice.AddTask(newTask, theListId);
             newtasktitle = string.Empty;
             newduedate = DateTime.Now;

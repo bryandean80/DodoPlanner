@@ -34,9 +34,13 @@
                         @(++dayOfMonthCounter) <br />
                         @foreach(var task in tdlistservice.GetTasksOnDate(month.AddDays(dayOfMonthCounter-1)))
                         {
+                            var list = tdlistservice.GetTdLists().First(x => x.ListID == task.ListId);
+                            var cat = tdlistservice.GetCategories().First(x => x.Id == list.CategoryId);
+                            colorstyle = cat.Color;
+                            
                             if (!task.completed)
                             {
-                                @task.title <br>
+                                <p style="color: @colorstyle;">@list.Title: @task.title</p>
                             }
                         }
                     </td>
@@ -57,6 +61,8 @@
 @code {
     bool maxDayReached;
     DateTime month { get; set; }
+
+    string colorstyle { get; set; }
 
     DateTime nextMonth
     {

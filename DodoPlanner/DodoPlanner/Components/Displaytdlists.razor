@@ -4,37 +4,74 @@
 @using DodoPlanner.Pages
 @inject JsonFileTdListService tdlistservice
 <center>
-<p>Edit Lists: <input type="checkbox" @onclick="(e => editMode = !editMode)" /></p>
+<p>Edit Mode: <input type="checkbox" @onclick="(e => editMode = !editMode)" /></p>
 
-<table class="table table-borderless" style="width: 50%; text-align: center;">
-    <tbody>
-    @foreach (var tdlist in tdlistservice.GetTdLists())
+@foreach (var cat in tdlistservice.GetCategories())
+{
+    if (!newListTitles.ContainsKey(cat.Id))
     {
-        <tr><td>
-            @if (editMode)
-            {
-                <div class="input-group">
-                    <input class="form-control" value="@tdlist.Title" @onchange="(e => {
-                                                               tdlist.Title = e.Value.ToString();
-                                                               tdlistservice.writeJson(tdlist);
-                                                           })" />
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-danger btn-sm" @onclick="(e => RemoveList(tdlist.ListID))"> ╳ </button>
-                    </div>
-                </div>
-            }
-            else
-            {
-                <a class="btn btn-outline-secondary btn-sm" style="width: 50%;" href="/ToDoList/@tdlist.ListID.ToString()">@tdlist.Title</a>
-            }
-        </td></tr>
+        newListTitles[cat.Id] = string.Empty;
     }
-    </tbody>
-</table>
+    if (editMode)
+    {
 <div class="input-group" style="width: 50%;">
-    <input class="form-control" @bind="newListTitle" />
+    <input class="form-control" style="font-weight: bold; color:@cat.Color;" value="@cat.Name" @onchange="(e => { cat.Name = e.Value.ToString(); tdlistservice.CategoryWriteJson(cat); })" />
     <div class="input-group-append">
-        <button class="btn btn-outline-success" @onclick="(e => AddList())">Add New List </button>
+        <input class="form-control" type="color" value="@cat.Color" @onchange="(e => { cat.Color = e.Value.ToString(); tdlistservice.CategoryWriteJson(cat); })" />
+    </div>
+    <div class="input-group-append">
+        <button class="btn btn-outline-danger btn-sm" @onclick="(e => RemoveCategory(cat.Id))"> ╳ </button>
+    </div>
+</div>
+    }
+    else
+    {
+        <h2 style="color: @cat.Color; text-align: center">@cat.Name</h2>
+    }
+    <table class="table table-borderless" style="width: 50%; text-align: center;">
+        <tbody>
+        @foreach (var tdlist in tdlistservice.GetTdLists().Where(x => x.CategoryId == cat.Id))
+        {
+            <tr><td>
+                @if (editMode)
+                {
+                    <div class="input-group">
+                        <input class="form-control" value="@tdlist.Title" @onchange="(e =>
+                                                                                     {
+                                                                                         tdlist.Title = e.Value.ToString();
+                                                                                         tdlistservice.writeJson(tdlist);
+                                                                                     })" />
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-danger btn-sm" @onclick="(e => RemoveList(tdlist.ListID))"> ╳ </button>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <a class="btn btn-outline-secondary btn-sm" style="width: 50%;" href="/ToDoList/@tdlist.ListID.ToString()">@tdlist.Title</a>
+                }
+            </td></tr>
+        }
+        </tbody>
+    </table>
+    <div class="input-group" style="width: 30%;">
+        <input class="form-control"  @onchange="(e => newListTitles[cat.Id] = e.Value.ToString())"/>
+        <div class="input-group-append">
+            <button class="btn btn-outline-success" @onclick="(e => AddList(cat.Id))">Add New List </button>
+        </div>
+    </div>
+    <br />
+    if (editMode)
+    {
+        <br />
+    }
+}
+<br /><br />
+<div class="input-group" style="width: 50%;">
+    <input class="form-control" @bind="newCategoryTitle" />
+    <input class="form-control" type="color" @bind="newCategoryColor" />
+    <div class="input-group-append">
+        <button class="btn btn-outline-success" @onclick="(e => AddCategory())">Add New Category </button>
     </div>
 </div>
 </center>
@@ -44,14 +81,28 @@
 
 
 @code {
-    string newListTitle { get; set; }
+    string newCategoryColor { get; set; }
+
+    Dictionary<Guid, string> newListTitles { get; set; }
+    string newCategoryTitle { get; set; }
 
     bool editMode { get; set; }
 
-    void AddList()
+    void AddList(Guid catid)
     {
-        tdlistservice.AddTdList(newListTitle);
-        newListTitle = string.Empty;
+        tdlistservice.AddTdList(newListTitles[catid], catid);
+        newListTitles[catid] = string.Empty;
+    }
+
+    void AddCategory()
+    {
+        tdlistservice.AddCategory(newCategoryTitle, newCategoryColor);
+        newCategoryTitle = string.Empty;
+    }
+
+    void RemoveCategory(Guid catid)
+    {
+        tdlistservice.RemoveCategory(catid);
     }
 
     void RemoveList(Guid ListId)
@@ -63,5 +114,6 @@
     {
         base.OnInitialized();
         editMode = false;
+        newListTitles = new Dictionary<Guid, string>();
     }
 }
