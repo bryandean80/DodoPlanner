@@ -20,7 +20,6 @@ CREATE TABLE Users(
 CREATE TABLE Items(
   itemID CHAR(36),
   title VARCHAR(25),
-  description VARCHAR(140),
   dueDate DATE,
   completed INTEGER,
   listID CHAR(36),
