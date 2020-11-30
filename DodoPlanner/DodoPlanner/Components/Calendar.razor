@@ -37,7 +37,7 @@
                             var list = tdlistservice.GetTdLists().First(x => x.ListID == task.ListId);
                             var cat = tdlistservice.GetCategories().First(x => x.Id == list.CategoryId);
                             colorstyle = cat.Color;
-                            
+
                             if (!task.completed)
                             {
                                 <p style="color: @colorstyle;">@list.Title: @task.title</p>

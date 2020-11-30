@@ -36,6 +36,18 @@
                 @if (editMode)
                 {
                     <div class="input-group">
+                        <div class="dropdown">
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown">
+                                Select Category
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                @foreach (Category category in tdlistservice.GetCategories())
+                                {
+                                    <li><a class="btn btn-outliine-secondary" style="text-align: center; color: @category.Color;" href="#" value="@category.Id" @onclick="(e => { tdlist.CategoryId = category.Id; tdlistservice.writeJson(tdlist); })">@category.Name</a></li>
+                                }
+                            </ul>
+                        </div>
                         <input class="form-control" value="@tdlist.Title" @onchange="(e =>
                                                                                      {
                                                                                          tdlist.Title = e.Value.ToString();
@@ -55,7 +67,7 @@
         </tbody>
     </table>
     <div class="input-group" style="width: 30%;">
-        <input class="form-control"  @onchange="(e => newListTitles[cat.Id] = e.Value.ToString())"/>
+        <input class="form-control" value="@newListTitles[cat.Id]" @onchange="(e => newListTitles[cat.Id] = e.Value.ToString())"/>
         <div class="input-group-append">
             <button class="btn btn-outline-success" @onclick="(e => AddList(cat.Id))">Add New List </button>
         </div>
