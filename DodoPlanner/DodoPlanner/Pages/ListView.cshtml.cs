@@ -14,7 +14,7 @@ namespace DodoPlanner.Pages
     {
         private readonly ILogger<ListViewModel> _logger;
 
-        public ListViewModel(ILogger<ListViewModel> logger, JsonFileTdListService service)
+        public ListViewModel(ILogger<ListViewModel> logger, SqlTdListService service)
         {
             _logger = logger;
         }

@@ -26,7 +26,7 @@ namespace DodoPlanner
         {
             services.AddServerSideBlazor().AddCircuitOptions(options => { options.DetailedErrors = true; });
             services.AddRazorPages();
-            services.AddTransient<JsonFileTdListService>();
+            services.AddTransient<SqlTdListService>();
             services.AddServerSideBlazor();
             services.AddHttpClient();
         }

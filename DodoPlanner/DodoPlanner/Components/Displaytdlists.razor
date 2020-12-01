@@ -2,7 +2,7 @@
 @using DodoPlanner.Models
 @using Microsoft.AspNetCore.Components.Web
 @using DodoPlanner.Pages
-@inject JsonFileTdListService tdlistservice
+@inject SqlTdListService tdlistservice
 <center>
 <p>Edit Mode: <input type="checkbox" @onclick="(e => editMode = !editMode)" /></p>
 
@@ -15,9 +15,9 @@
     if (editMode)
     {
 <div class="input-group" style="width: 50%;">
-    <input class="form-control" style="font-weight: bold; color:@cat.Color;" value="@cat.Name" @onchange="(e => { cat.Name = e.Value.ToString(); tdlistservice.CategoryWriteJson(cat); })" />
+    <input class="form-control" style="font-weight: bold; color:@cat.Color;" value="@cat.Name" @onchange="(e => { cat.Name = e.Value.ToString();})" />
     <div class="input-group-append">
-        <input class="form-control" type="color" value="@cat.Color" @onchange="(e => { cat.Color = e.Value.ToString(); tdlistservice.CategoryWriteJson(cat); })" />
+        <input class="form-control" type="color" value="@cat.Color" @onchange="(e => { cat.Color = e.Value.ToString();})" />
     </div>
     <div class="input-group-append">
         <button class="btn btn-outline-danger btn-sm" @onclick="(e => RemoveCategory(cat.Id))"> ╳ </button>
@@ -44,14 +44,13 @@
                             <ul class="dropdown-menu">
                                 @foreach (Category category in tdlistservice.GetCategories())
                                 {
-                                    <li><a class="btn btn-outliine-secondary" style="text-align: center; color: @category.Color;" href="#" value="@category.Id" @onclick="(e => { tdlist.CategoryId = category.Id; tdlistservice.writeJson(tdlist); })">@category.Name</a></li>
+                                    <li><a class="btn btn-outliine-secondary" style="text-align: center; color: @category.Color;" href="#" value="@category.Id" @onclick="(e => { tdlist.CategoryId = category.Id;})">@category.Name</a></li>
                                 }
                             </ul>
                         </div>
                         <input class="form-control" value="@tdlist.Title" @onchange="(e =>
                                                                                      {
                                                                                          tdlist.Title = e.Value.ToString();
-                                                                                         tdlistservice.writeJson(tdlist);
                                                                                      })" />
                         <div class="input-group-append">
                             <button class="btn btn-outline-danger btn-sm" @onclick="(e => RemoveList(tdlist.ListID))"> ╳ </button>

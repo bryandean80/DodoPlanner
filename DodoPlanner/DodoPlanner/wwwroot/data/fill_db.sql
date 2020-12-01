@@ -1,17 +1,18 @@
+PRAGMA foreign_keys = ON;
+
 INSERT INTO Categories VALUES(
   "026b7678-f314-40ab-ba30-c6214d2e0d05",
   "School",
   "blue"
 );
 INSERT INTO Lists VALUES(
-  "Algos",
   "acbab712-15ec-4935-bfba-45cec47023a6",
+  "Algos",
   "026b7678-f314-40ab-ba30-c6214d2e0d05"
 );
 INSERT INTO Items VALUES(
   "9a3eb130-8053-449e-b511-26eabc3797d1",
   "Work on hw 4",
-  "Do my hw 4 homework. Bryan forgot to add a field for this.",
   "2020-11-27T00:00:00",
   0,
   "acbab712-15ec-4935-bfba-45cec47023a6"
@@ -39,8 +40,8 @@ INSERT INTO Items VALUES(
   "acbab712-15ec-4935-bfba-45cec47023a6"
 );
 INSERT INTO Lists VALUES(
-  "new list5",
   "92e22699-0f33-40b5-ac84-c3170b02424d",
+  "new list5",
   "026b7678-f314-40ab-ba30-c6214d2e0d05"
 );
 INSERT INTO Items VALUES(

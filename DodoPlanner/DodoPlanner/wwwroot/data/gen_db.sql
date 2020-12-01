@@ -6,10 +6,10 @@ CREATE TABLE Categories(
   PRIMARY KEY(catID)
 );
 CREATE TABLE Lists(
-  listName VARCHAR(25),
   listID CHAR(36),
+  listName VARCHAR(25),
   catID CHAR(36),
-  PRIMARY KEY(listID, catID),
+  PRIMARY KEY(listID),
   FOREIGN KEY(catID) REFERENCES Categories
 );
 CREATE TABLE Users(
@@ -23,8 +23,8 @@ CREATE TABLE Items(
   dueDate DATE,
   completed INTEGER,
   listID CHAR(36),
-  PRIMARY KEY(itemID, listID),
-  FOREIGN KEY(listID) REFERENCES Lists
+  PRIMARY KEY(itemID),
+  FOREIGN KEY(listID) REFERENCES Lists(listID)
 );
 CREATE TABLE Is_In(
   itemID CHAR(36),

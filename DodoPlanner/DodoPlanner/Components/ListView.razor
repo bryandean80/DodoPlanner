@@ -3,7 +3,7 @@
 @using Microsoft.AspNetCore.Components.Web
 @using DodoPlanner.Pages
 @using System.Globalization
-@inject JsonFileTdListService tdlistservice
+@inject SqlTdListService tdlistservice
 
     <center>
         <h3>@tdlistservice.GetList(theListId).Title </h3>
@@ -29,8 +29,8 @@
                             @if (editMode)
                             {
                                 <div class="input-group">
-                                    <input class="form-control" value="@task.title" @onchange="(e => {task.title = e.Value.ToString(); tdlistservice.writeJson(task, theListId);})" />
-                                    <input class="form-control" type="date" value="@task.duedate.ToString(format)" @onchange="(e => {task.duedate = DateTime.ParseExact(e.Value.ToString(), format, CultureInfo.InvariantCulture); tdlistservice.writeJson(task, theListId);})" />
+                                    <input class="form-control" value="@task.title" @onchange="(e => {task.title = e.Value.ToString();})" />
+                                    <input class="form-control" type="date" value="@task.duedate.ToString(format)" @onchange="(e => {task.duedate = DateTime.ParseExact(e.Value.ToString(), format, CultureInfo.InvariantCulture);})" />
                                     <div class="input-group-append">
                                         <button class="btn btn-outline-danger btn-sm" @onclick="(e => RemoveTask(task.TaskID))"> ╳ </button>
                                     </div>
