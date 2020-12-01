@@ -29,8 +29,8 @@
                             @if (editMode)
                             {
                                 <div class="input-group">
-                                    <input class="form-control" value="@task.title" @onchange="(e => {task.title = e.Value.ToString();})" />
-                                    <input class="form-control" type="date" value="@task.duedate.ToString(format)" @onchange="(e => {task.duedate = DateTime.ParseExact(e.Value.ToString(), format, CultureInfo.InvariantCulture);})" />
+                                    <input class="form-control" value="@task.title" @onchange="(e => {task.title = e.Value.ToString(); tdlistservice.editTask(task); })" />
+                                    <input class="form-control" type="date" value="@task.duedate.ToString(format)" @onchange="(e => {task.duedate = DateTime.ParseExact(e.Value.ToString(), format, CultureInfo.InvariantCulture); tdlistservice.editTask(task); })" />
                                     <div class="input-group-append">
                                         <button class="btn btn-outline-danger btn-sm" @onclick="(e => RemoveTask(task.TaskID))"> ╳ </button>
                                     </div>

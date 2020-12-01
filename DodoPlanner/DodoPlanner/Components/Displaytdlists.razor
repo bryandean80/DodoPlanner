@@ -14,15 +14,15 @@
     }
     if (editMode)
     {
-<div class="input-group" style="width: 50%;">
-    <input class="form-control" style="font-weight: bold; color:@cat.Color;" value="@cat.Name" @onchange="(e => { cat.Name = e.Value.ToString();})" />
-    <div class="input-group-append">
-        <input class="form-control" type="color" value="@cat.Color" @onchange="(e => { cat.Color = e.Value.ToString();})" />
-    </div>
-    <div class="input-group-append">
-        <button class="btn btn-outline-danger btn-sm" @onclick="(e => RemoveCategory(cat.Id))"> ╳ </button>
-    </div>
-</div>
+        <div class="input-group" style="width: 50%;">
+            <input class="form-control" style="font-weight: bold; color:@cat.Color;" value="@cat.Name" @onchange="(e => { cat.Name = e.Value.ToString(); tdlistservice.editCategory(cat); })" />
+            <div class="input-group-append">
+                <input class="form-control" type="color" value="@cat.Color" @onchange="(e => { cat.Color = e.Value.ToString(); tdlistservice.editCategory(cat);})" />
+            </div>
+            <div class="input-group-append">
+                <button class="btn btn-outline-danger btn-sm" @onclick="(e => RemoveCategory(cat.Id))"> ╳ </button>
+            </div>
+        </div>
     }
     else
     {
@@ -44,13 +44,14 @@
                             <ul class="dropdown-menu">
                                 @foreach (Category category in tdlistservice.GetCategories())
                                 {
-                                    <li><a class="btn btn-outliine-secondary" style="text-align: center; color: @category.Color;" href="#" value="@category.Id" @onclick="(e => { tdlist.CategoryId = category.Id;})">@category.Name</a></li>
+                                    <li><a class="btn btn-outliine-secondary" style="text-align: center; color: @category.Color;" href="#" value="@category.Id" @onclick="(e => { tdlist.CategoryId = category.Id; tdlistservice.editList(tdlist); })">@category.Name</a></li>
                                 }
                             </ul>
                         </div>
                         <input class="form-control" value="@tdlist.Title" @onchange="(e =>
                                                                                      {
                                                                                          tdlist.Title = e.Value.ToString();
+                                                                                         tdlistservice.editList(tdlist);
                                                                                      })" />
                         <div class="input-group-append">
                             <button class="btn btn-outline-danger btn-sm" @onclick="(e => RemoveList(tdlist.ListID))"> ╳ </button>
