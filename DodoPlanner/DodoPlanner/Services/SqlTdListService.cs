@@ -291,5 +291,47 @@ namespace DodoPlanner.Services
             command.Parameters.AddWithValue("$listId", newtask.ListId.ToString());
             command.ExecuteNonQuery();
         }
+
+        public void editCategory(Category newCat)
+        {
+            var command = Connection.CreateCommand();
+            command.CommandText =
+            @"UPDATE Categories
+            SET catName = $name,
+                color = $color
+            WHERE catID = $id;";
+            command.Parameters.AddWithValue("$name", newCat.Name);
+            command.Parameters.AddWithValue("$color", newCat.Color);
+            command.Parameters.AddWithValue("$id", newCat.Id.ToString());
+            command.ExecuteNonQuery();
+        }
+        public void editList(ToDoList newList)
+        {
+            var command = Connection.CreateCommand();
+            command.CommandText =
+            @"UPDATE Lists
+            SET listName = $name,
+                catID = $catID
+            WHERE listID = $id;";
+            command.Parameters.AddWithValue("$name", newList.Title);
+            command.Parameters.AddWithValue("$catID", newList.CategoryId.ToString());
+            command.Parameters.AddWithValue("$id", newList.ListID.ToString());
+            command.ExecuteNonQuery();
+        }
+        public void editTask(task newTask)
+        {
+            var command = Connection.CreateCommand();
+            command.CommandText =
+            @"UPDATE Items
+            SET title=$title,
+                dueDate=$date,
+                listID=$listID
+            WHERE itemID=$id;";
+            command.Parameters.AddWithValue("$title", newTask.title);
+            command.Parameters.AddWithValue("$date", newTask.duedate.Date.ToString());
+            command.Parameters.AddWithValue("$listID", newTask.ListId.ToString());
+            command.Parameters.AddWithValue("$id", newTask.TaskID.ToString());
+            command.ExecuteNonQuery();
+        }
     }
 }
