@@ -333,5 +333,50 @@ namespace DodoPlanner.Services
             command.Parameters.AddWithValue("$id", newTask.TaskID.ToString());
             command.ExecuteNonQuery();
         }
+
+        public bool createAccount(string username, string password)
+        {
+            var command = Connection.CreateCommand();
+            command.CommandText = "SELECT username FROM Users WHERE username=$user;";
+            command.Parameters.AddWithValue("$user", username);
+            using (var reader = command.ExecuteReader())
+            {
+                if (reader.Read())
+                {
+                    return false;
+                }
+            }
+            command = Connection.CreateCommand();
+            command.CommandText = "INSERT INTO Users VALUES($user, $pw);";
+            command.Parameters.AddWithValue("$user", username);
+            command.Parameters.AddWithValue("$pw", password);
+            command.ExecuteNonQuery();
+            return true;
+        }
+
+        public bool login(string username, string password)
+        {
+            var command = Connection.CreateCommand();
+            command.CommandText = "SELECT password FROM Users WHERE username=$user;";
+            command.Parameters.AddWithValue("$user", username);
+            using (var reader = command.ExecuteReader())
+            {
+                if (!reader.Read())
+                {
+                    return false;
+                }
+                else
+                {
+                    if(reader.GetString(0) == password)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
     }
 }
