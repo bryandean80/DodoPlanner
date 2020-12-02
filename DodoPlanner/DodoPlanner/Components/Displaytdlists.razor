@@ -2,8 +2,10 @@
 @using DodoPlanner.Models
 @using Microsoft.AspNetCore.Components.Web
 @using DodoPlanner.Pages
+
 @inject SqlTdListService tdlistservice
 <center>
+  
 <p>Edit Mode: <input type="checkbox" @onclick="(e => editMode = !editMode)" /></p>
 
 @foreach (var cat in tdlistservice.GetCategories())

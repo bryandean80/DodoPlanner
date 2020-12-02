@@ -1,0 +1,41 @@
+﻿@using DodoPlanner.Services
+@using DodoPlanner.Models
+@using Microsoft.AspNetCore.Authentication.Cookies;
+@using Microsoft.AspNetCore.Components.Web
+@using DodoPlanner.Pages
+@inject SqlTdListService tdlistservice
+<center>
+    <h3>Create Account</h3>
+    <div class="input-group" style="width: 50%">
+        <span>Username </span>
+        <input class="form-control" @bind="newusername" />
+    </div>
+    <br />
+    <div class="input-group" style="width: 50%">
+        <span>Password </span>
+        <input class="form-control" @bind="newpassword" />
+    </div>
+    <br />
+    <div class="input-group" style="width: 50%">
+        <button class="btn btn-outline-success" @onclick="(e => CreateAcc())">Create Account</button>
+    </div>
+
+
+</center>
+@code {
+
+    public string newusername { get; set; }
+    public string newpassword { get; set; }
+
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+
+    void CreateAcc()
+    {
+        tdlistservice.createAccount(newusername, newpassword);
+        newpassword = string.Empty;
+        newusername = string.Empty;
+        NavigationManager.NavigateTo("/Login", forceLoad: true);
+    }
+
+}
