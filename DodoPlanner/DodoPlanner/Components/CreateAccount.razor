@@ -9,7 +9,7 @@
     <img src="/data/imgs/dodologo.png" height="200" />
     <br /><br />
     <h1>Create Account</h1>
-    <br /><br />
+    <br />
     <p>Username </p>
     <div class="input-group" style="width: 75%">
         <input class="form-control" @bind="newusername" />
@@ -20,8 +20,8 @@
         <input type="password" class="form-control" @bind="newpassword" />
     </div>
     <br />
-    <div  class="input-group"style="width: 50%; text-align:center">
-        <button class="btn btn-outline-primary" style="align-content:center" @onclick="(e => CreateAcc())">Create Account</button>
+    <div style="width: 50%; text-align:center">
+        <button type="submit"class="btn btn-outline-primary" style="align-content:center" @onclick="(e => CreateAcc())">Create Account</button>
     </div>
 
 
@@ -36,6 +36,7 @@
 
     void CreateAcc()
     {
+        Console.Write("This ran");
         tdlistservice.createAccount(newusername, newpassword);
         newpassword = string.Empty;
         newusername = string.Empty;

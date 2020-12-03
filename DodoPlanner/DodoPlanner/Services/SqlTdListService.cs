@@ -354,7 +354,7 @@ namespace DodoPlanner.Services
             using (var reader = command.ExecuteReader())
             {
                 reader.Read();
-                if(reader.GetInt16(0) == 0)
+                if(reader.GetInt16(0) != 0)
                 {
                     return false;
                 }
