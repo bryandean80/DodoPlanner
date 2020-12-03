@@ -480,6 +480,7 @@ namespace DodoPlanner.Services
             List<string> users = new List<string>();
             var command = Connection.CreateCommand();
             command.CommandText = "SELECT username FROM Can_View WHERE catID=$id;";
+            command.Parameters.AddWithValue("$id", catID.ToString());
             using (var reader = command.ExecuteReader())
             {
                 while (reader.Read())
