@@ -470,5 +470,20 @@ namespace DodoPlanner.Services
             }
                 return users;
         }
+
+        public List<string> get_users_that_can_view_category(Guid catID)
+        {
+            List<string> users = new List<string>();
+            var command = Connection.CreateCommand();
+            command.CommandText = "SELECT username FROM Can_View WHERE catID=$id;";
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    users.Add(reader.GetString(0));
+                }
+            }
+                return users;
+        }
     }
 }
