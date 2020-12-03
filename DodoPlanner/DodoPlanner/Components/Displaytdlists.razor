@@ -119,6 +119,7 @@
     void share(Guid catId)
     {
         tdlistservice.add_view_permissions(shareusername, catId);
+        shareusername = string.Empty;
     }
 
     void AddList(Guid catid)
@@ -149,6 +150,7 @@
         editMode = false;
         newListTitles = new Dictionary<Guid, string>();
         cookie = "";
+        shareusername = "Enter Username";
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

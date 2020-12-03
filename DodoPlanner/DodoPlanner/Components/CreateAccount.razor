@@ -5,19 +5,23 @@
 @using DodoPlanner.Pages
 @inject SqlTdListService tdlistservice
 <center>
-    <h3>Create Account</h3>
-    <div class="input-group" style="width: 50%">
-        <span>Username </span>
+    <br />
+    <img src="/data/imgs/dodologo.png" height="200" />
+    <br /><br />
+    <h1>Create Account</h1>
+    <br /><br />
+    <p>Username </p>
+    <div class="input-group" style="width: 75%">
         <input class="form-control" @bind="newusername" />
     </div>
     <br />
-    <div class="input-group" style="width: 50%">
-        <span>Password </span>
-        <input class="form-control" @bind="newpassword" />
+    <p>Password </p>
+    <div class="input-group" style="width: 75%">
+        <input type="password" class="form-control" @bind="newpassword" />
     </div>
     <br />
-    <div class="input-group" style="width: 50%">
-        <button class="btn btn-outline-success" @onclick="(e => CreateAcc())">Create Account</button>
+    <div  class="input-group"style="width: 50%; text-align:center">
+        <button class="btn btn-outline-primary" style="align-content:center" @onclick="(e => CreateAcc())">Create Account</button>
     </div>
 
 

@@ -11,20 +11,24 @@
         document.cookie = "username = @Model.UserName";
     }
 </script>
+<center>
 <div>
     @Model.Message
 </div>
 <form method="post">
+    <br />
+    <img src="~/data/imgs/dodologo.png" height="200"/>
+    <br /><br />
     <div class="form-group">
         <label asp-for="UserName" class="col-form-label col-md-2"></label>
         <div class="col-md-10">
-            <input asp-for="UserName" />
+            <input class="form-control" asp-for="UserName" />
         </div>
     </div>
     <div class="form-group">
         <label asp-for="Password" class="col-form-label col-md-2"></label>
         <div class="col-md-10">
-            <input asp-for="Password" />
+            <input class="form-control" asp-for="Password" />
         </div>
     </div>
     <div class="form-group">
@@ -32,5 +36,6 @@
     </div>
     <a href="/CreateAccount" >Create Account</a>
 </form>
+</center>
 
 
