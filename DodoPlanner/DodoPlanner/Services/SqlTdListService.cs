@@ -139,7 +139,7 @@ namespace DodoPlanner.Services
                 return categories;
         }
 
-        public void AddCategory(string name, string color)
+        public void AddCategory(string name, string color, string username)
         {
             var category = new Category();
             category.Name = name;
@@ -151,6 +151,10 @@ namespace DodoPlanner.Services
                 $catID,
                 $catName,
                 $color
+                );
+                INSERT INTO Can_View VALUES(
+                $username,
+                $catID
                 );";
             command.Parameters.AddWithValue("$catID", category.Id.ToString());
             command.Parameters.AddWithValue("$catName", category.Name);
@@ -159,6 +163,7 @@ namespace DodoPlanner.Services
                 category.Color = "#FFFFFF";
             }
             command.Parameters.AddWithValue("$color", category.Color);
+            command.Parameters.AddWithValue("$username", username);
             command.ExecuteNonQuery();
         }
 
