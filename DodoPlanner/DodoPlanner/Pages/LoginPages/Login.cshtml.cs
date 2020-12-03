@@ -9,7 +9,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using DodoPlanner.Services;
-
+using System.Web;
+using Microsoft.JSInterop;
 
 namespace DodoPlanner.Pages.LoginPages
 {
@@ -17,6 +18,7 @@ namespace DodoPlanner.Pages.LoginPages
     {
         private readonly IConfiguration configuration;
         public SqlTdListService tdlistservice;
+         
         public LoginModel(IConfiguration configuration, SqlTdListService tdListService)
         {
             this.configuration = configuration;
@@ -25,6 +27,7 @@ namespace DodoPlanner.Pages.LoginPages
         
         [BindProperty]
         public string UserName { get; set; }
+
         [BindProperty, DataType(DataType.Password)]
         public string Password { get; set; }
         public string Message { get; set; }
@@ -33,13 +36,14 @@ namespace DodoPlanner.Pages.LoginPages
 
             if (tdlistservice.login(UserName, Password))
             {
-                    var claims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.Name, UserName)
-                    };
-                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
-                    return RedirectToPage("/Index");
+                Response.Cookies.Append("username", UserName);
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, UserName)
+                };
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+                return RedirectToPage("/Index");
             }
             Message = "Invalid attempt";
             return Page();

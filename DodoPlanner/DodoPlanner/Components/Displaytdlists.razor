@@ -2,11 +2,15 @@
 @using DodoPlanner.Models
 @using Microsoft.AspNetCore.Components.Web
 @using DodoPlanner.Pages
-
+@using System.Web 
+@using Microsoft.JSInterop 
+@inject IJSRuntime JSRuntime
 @inject SqlTdListService tdlistservice
 <center>
-  
+    <span>Welcome @cookie! </span>
 <p>Edit Mode: <input type="checkbox" @onclick="(e => editMode = !editMode)" /></p>
+ 
+ 
 
 @foreach (var cat in tdlistservice.GetCategories())
 {
@@ -97,6 +101,13 @@
 @code {
     string newCategoryColor { get; set; }
 
+    string cookie { get; set; }
+
+    public async void getcookie()
+    {
+        cookie = await JSRuntime.InvokeAsync<string>("getcookie", "username");
+    }
+
     Dictionary<Guid, string> newListTitles { get; set; }
     string newCategoryTitle { get; set; }
 
@@ -129,5 +140,16 @@
         base.OnInitialized();
         editMode = false;
         newListTitles = new Dictionary<Guid, string>();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var test = await JSRuntime.InvokeAsync<string>("getcookie", "username");
+            cookie = test;
+            StateHasChanged();
+        }
+
     }
 }

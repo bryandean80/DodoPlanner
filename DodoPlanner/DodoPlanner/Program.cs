@@ -22,5 +22,6 @@ namespace DodoPlanner
                 {
                     webBuilder.UseStartup<Startup>();
                 });
+
     }
 }

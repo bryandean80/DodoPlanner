@@ -6,6 +6,11 @@
     ViewData["Title"] = "Login page";
 }
 
+<script>
+    function makecookie() {
+        document.cookie = "username = @Model.UserName";
+    }
+</script>
 <div>
     @Model.Message
 </div>
@@ -27,3 +32,5 @@
     </div>
     <a href="/CreateAccount" >Create Account</a>
 </form>
+
+
