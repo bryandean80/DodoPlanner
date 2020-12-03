@@ -473,6 +473,10 @@ namespace DodoPlanner.Services
 
         public List<string> get_users_that_can_view_category(Guid catID)
         {
+            if(catID == null)
+            {
+                return null;
+            }
             List<string> users = new List<string>();
             var command = Connection.CreateCommand();
             command.CommandText = "SELECT username FROM Can_View WHERE catID=$id;";
