@@ -378,5 +378,64 @@ namespace DodoPlanner.Services
                 }
             }
         }
+
+        public void add_view_permissions(string username, Guid catID)
+        {
+            var command = Connection.CreateCommand();
+            command.CommandText = "INSERT INTO Can_View VALUES ($username, $catID);";
+            command.Parameters.AddWithValue("$username", username);
+            command.Parameters.AddWithValue("$catID", catID);
+            command.ExecuteNonQuery();
+        }
+
+        public List<Category> get_user_categories(string username)
+        {
+            List<Category> catList = new List<Category>();
+            var command = Connection.CreateCommand();
+            command.CommandText = "SELECT catID FROM Can_View WHERE username=$username";
+            command.Parameters.AddWithValue("$username", username);
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    var cat = new Category();
+                    cat.Id = Guid.Parse(reader.GetString(0));
+                    cat.Name = reader.GetString(1);
+                    cat.Color = reader.GetString(2);
+                    catList.Add(cat);
+                }
+            }
+            return catList;
+        }
+
+        public List<task> get_user_tasks_on_date(string username, DateTime dueDate)
+        {
+            List<task> tasks = new List<task>();
+            var command = Connection.CreateCommand();
+            command.CommandText =
+                @"
+                SELECT Items.*
+                FROM Items
+                INNER JOIN Lists ON Items.listID = Lists.listID
+                INNER JOIN Categories ON Lists.catID = Categories.catID
+                INNER JOIN Can_View ON Categories.catID = Can_View.catID
+                WHERE Can_View.username=$username AND dueDate=$dueDate;";
+            command.Parameters.AddWithValue("$username", username);
+            command.Parameters.AddWithValue("$dueDate", dueDate.ToString());
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    var task = new task();
+                    task.TaskID = Guid.Parse(reader.GetString(0));
+                    task.title = reader.GetString(1);
+                    task.duedate = DateTime.Parse(reader.GetString(2));
+                    task.completed = reader.GetString(3) == "1";
+                    task.ListId = Guid.Parse(reader.GetString(4));
+                    tasks.Add(task);
+                }
+            }
+                return tasks;
+        }
     }
 }

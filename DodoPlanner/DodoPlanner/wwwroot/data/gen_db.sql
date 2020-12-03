@@ -35,8 +35,8 @@ CREATE TABLE Is_In(
 );
 CREATE TABLE Can_View(
   username VARCHAR(25),
-  listID CHAR(36),
-  PRIMARY KEY (username, listID),
+  catID CHAR(36),
+  PRIMARY KEY (username, catID),
   FOREIGN KEY (username) REFERENCES Users,
-  FOREIGN KEY (listID) REFERENCES Lists
+  FOREIGN KEY (catID) REFERENCES Categories
 );
