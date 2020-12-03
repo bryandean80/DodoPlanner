@@ -7,7 +7,9 @@
 @inject IJSRuntime JSRuntime
 @inject SqlTdListService tdlistservice
 <center>
-    <span>Welcome @cookie! </span>
+    <div class="text-center">
+        <h1 class="display-4">@cookie's Lists</h1>
+    </div>
 <p>Edit Mode: <input type="checkbox" @onclick="(e => editMode = !editMode)" /></p>
  
  
@@ -29,7 +31,7 @@
         <input class="form-control" @bind="shareusername"/>
     </div>
     <div class="input-group-append">
-        <button class="btn btn-outline-secondary btn-sm" @onclick="(e => share(cat.Id))"> Share List</button>
+        <button class="btn btn-outline-secondary btn-sm" @onclick="(e => share(cat.Id))"> Share Category</button>
     </div>
     <div class="input-group-append">
         <button class="btn btn-outline-danger btn-sm" @onclick="(e => RemoveCategory(cat.Id))"> ╳ </button>

@@ -45,6 +45,7 @@ namespace DodoPlanner
             services.AddMvc().AddRazorPagesOptions(options => {
                 options.Conventions.AuthorizePage("/Index");
                 options.Conventions.AuthorizePage("/Calendar");
+                options.Conventions.AuthorizePage("/Logout");
             });
 
         }
