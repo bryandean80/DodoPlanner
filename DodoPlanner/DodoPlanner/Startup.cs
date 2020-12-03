@@ -24,6 +24,7 @@ namespace DodoPlanner
         {
             //services.AddServerSideBlazor().AddCircuitOptions(options => { options.DetailedErrors = true; });
             services.AddTransient<SqlTdListService>();
+           
             services.AddServerSideBlazor();
             services.AddHttpClient();
 
@@ -37,6 +38,8 @@ namespace DodoPlanner
             });
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(cookieOptions => {
                 cookieOptions.LoginPath = "/Login";
+                cookieOptions.Cookie.Name = "UserCookie";
+                cookieOptions.Cookie.HttpOnly = false;
             });
 
             services.AddMvc().AddRazorPagesOptions(options => {
