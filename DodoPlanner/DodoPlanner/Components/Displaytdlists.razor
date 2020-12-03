@@ -20,15 +20,21 @@
     }
     if (editMode)
     {
-        <div class="input-group" style="width: 50%;">
-            <input class="form-control" style="font-weight: bold; color:@cat.Color;" value="@cat.Name" @onchange="(e => { cat.Name = e.Value.ToString(); tdlistservice.editCategory(cat); })" />
-            <div class="input-group-append">
-                <input class="form-control" type="color" value="@cat.Color" @onchange="(e => { cat.Color = e.Value.ToString(); tdlistservice.editCategory(cat);})" />
-            </div>
-            <div class="input-group-append">
-                <button class="btn btn-outline-danger btn-sm" @onclick="(e => RemoveCategory(cat.Id))"> ╳ </button>
-            </div>
-        </div>
+<div class="input-group" style="width: 50%;">
+    <input class="form-control" style="font-weight: bold; color:@cat.Color;" value="@cat.Name" @onchange="(e => { cat.Name = e.Value.ToString(); tdlistservice.editCategory(cat); })" />
+    <div class="input-group-append">
+        <input class="form-control" type="color" value="@cat.Color" @onchange="(e => { cat.Color = e.Value.ToString(); tdlistservice.editCategory(cat);})" />
+    </div>
+    <div class="input-group-append">
+        <input class="form-control" @bind="shareusername"/>
+    </div>
+    <div class="input-group-append">
+        <button class="btn btn-outline-secondary btn-sm" @onclick="(e => share(cat.Id))"> Share List</button>
+    </div>
+    <div class="input-group-append">
+        <button class="btn btn-outline-danger btn-sm" @onclick="(e => RemoveCategory(cat.Id))"> ╳ </button>
+    </div>
+</div>
     }
     else
     {
@@ -102,12 +108,18 @@
     string newCategoryColor { get; set; }
 
     string cookie { get; set; }
+    string shareusername { get; set; }
 
 
     Dictionary<Guid, string> newListTitles { get; set; }
     string newCategoryTitle { get; set; }
 
     bool editMode { get; set; }
+
+    void share(Guid catId)
+    {
+        tdlistservice.add_view_permissions(shareusername, catId);
+    }
 
     void AddList(Guid catid)
     {
