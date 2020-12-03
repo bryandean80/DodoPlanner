@@ -40,7 +40,22 @@
     }
     else
     {
-        <h2 style="color: @cat.Color; text-align: center">@cat.Name</h2>
+        <div class="dropdown">
+            <h2  style="color: @cat.Color;padding-right:5px; display:inline">@cat.Name</h2> 
+            <button class="btn btn-outline-secondary dropdown-toggle btn-sm" type="button" data-toggle="dropdown">
+                Shared With @(tdlistservice.get_users_that_can_view_category(cat.Id).Count-1) others
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                @foreach (string user in tdlistservice.get_users_that_can_view_category(cat.Id))
+                {
+                    if(user != cookie)
+                    {
+                        <li><a href="#" class="btn btn-outliine-secondary">@user</a></li>
+                    }
+                }
+            </ul>
+        </div>
     }
     <table class="table table-borderless" style="width: 50%; text-align: center;">
         <tbody>

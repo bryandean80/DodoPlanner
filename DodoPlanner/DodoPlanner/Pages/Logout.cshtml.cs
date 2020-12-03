@@ -9,7 +9,7 @@ namespace DodoPlanner.Pages
 {
     public class LogoutModel : PageModel
     {
-        public IActionResult OnPost()
+        public IActionResult OnGet()
         {
             Response.Cookies.Delete("UserCookie");
             Response.Cookies.Delete("username");
