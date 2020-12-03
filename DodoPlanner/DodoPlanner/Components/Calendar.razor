@@ -1,61 +1,64 @@
-﻿@using DodoPlanner.Services 
+﻿@using DodoPlanner.Services
+@using Microsoft.JSInterop
+@inject IJSRuntime JSRuntime
 @inject SqlTdListService tdlistservice
 <center>
-<h3>Calendar</h3>
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th  colspan="7" style = "text-align: center"> @month.Year.ToString()</th>
-        </tr>
-        <tr>
-            <th style="text-align:center"><a class ="btn btn-outline-secondary" href="/Calendar/@previousMonth.Month/@previousMonth.Year">@previousMonth.ToString("MMMM")</a></th>
-            <th colspan="5" style="font-size: x-large; text-align: center;">@month.ToString("MMMM")</th>
-            <th style="text-align:center"><a class ="btn btn-outline-secondary" href=" /Calendar/@nextMonth.Month/@nextMonth.Year">@nextMonth.ToString("MMMM")</a></th>
-        </tr>
-        <tr>
-            @for(int i=0; i < 7; i++)
-            {
-                <th style="text-align:center">@Enum.Parse(typeof(DayOfWeek), i.ToString()) </th>
-            }
-        </tr>
-    </thead>
-    @while (!maxDayReached)
-    {
-        <tr>
-            @for(int i = 0; i < 7; i++)
-            {
-                if (i < (int)startingDay && dayOfMonthCounter == 0)
+    <h3>Calendar</h3>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th colspan="7" style="text-align: center"> @month.Year.ToString()</th>
+            </tr>
+            <tr>
+                <th style="text-align:center"><a class="btn btn-outline-secondary" href="/Calendar/@previousMonth.Month/@previousMonth.Year">@previousMonth.ToString("MMMM")</a></th>
+                <th colspan="5" style="font-size: x-large; text-align: center;">@month.ToString("MMMM")</th>
+                <th style="text-align:center"><a class="btn btn-outline-secondary" href=" /Calendar/@nextMonth.Month/@nextMonth.Year">@nextMonth.ToString("MMMM")</a></th>
+            </tr>
+            <tr>
+                @for (int i = 0; i < 7; i++)
                 {
-                   <td></td>
+                    <th style="text-align:center">@Enum.Parse(typeof(DayOfWeek), i.ToString()) </th>
                 }
-                else
+            </tr>
+        </thead>
+        @while (!maxDayReached)
+        {
+            <tr>
+                @for (int i = 0; i < 7; i++)
                 {
-                    <td style="text-align: center;">
-                        @(++dayOfMonthCounter) <br />
-                        @foreach(var task in tdlistservice.GetTasksOnDate(month.AddDays(dayOfMonthCounter-1)))
-                        {
-                            var list = tdlistservice.GetTdLists().First(x => x.ListID == task.ListId);
-                            var cat = tdlistservice.GetCategories().First(x => x.Id == list.CategoryId);
-                            colorstyle = cat.Color;
-
-                            if (!task.completed)
+                    if (i < (int)startingDay && dayOfMonthCounter == 0)
+                    {
+                        <td></td>
+                    }
+                    else
+                    {
+                        <td style="text-align: center;">
+                            @(++dayOfMonthCounter) <br />
+                            @foreach (var task in tdlistservice.get_user_tasks_on_date(username,month.AddDays(dayOfMonthCounter - 1)))
                             {
-                                <p style="color: @colorstyle;">@list.Title: @task.title</p>
+                                var list = tdlistservice.GetTdLists().First(x => x.ListID == task.ListId);
+                                var cat = tdlistservice.GetCategories().First(x => x.Id == list.CategoryId);
+                                colorstyle = cat.Color;
+
+                                if (!task.completed)
+                                {
+                                    <p style="color: @colorstyle;">@list.Title: @task.title</p>
+                                }
                             }
-                        }
-                    </td>
-                }
+                        </td>
+                    }
 
-                if(dayOfMonthCounter == maxDay)
-                {
-                    maxDayReached = true;
-                    break;
+                    if (dayOfMonthCounter == maxDay)
+                    {
+                        maxDayReached = true;
+                        break;
+                    }
                 }
-            }
-        </tr> 
-    }
+            </tr>
 
-</table>
+        }
+
+    </table>
 </center>
 
 @code {
@@ -63,6 +66,7 @@
     DateTime month { get; set; }
 
     string colorstyle { get; set; }
+    public string username { get; set; }
 
     DateTime nextMonth
     {
@@ -134,6 +138,7 @@
 
     protected override void OnInitialized()
     {
+        username = "";
         base.OnInitialized();
 
         month = new DateTime(yearNum, monthNum, 1);
@@ -141,6 +146,17 @@
         maxDay = month.AddMonths(1).AddDays(-1).Day;
         maxDayReached = false;
         dayOfMonthCounter = 0;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            username = await JSRuntime.InvokeAsync<string>("getcookie", "username");
+
+            StateHasChanged();
+        }
+
     }
 
 }
