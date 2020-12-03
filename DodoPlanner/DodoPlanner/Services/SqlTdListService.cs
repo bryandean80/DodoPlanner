@@ -190,8 +190,15 @@ namespace DodoPlanner.Services
             command = Connection.CreateCommand();
             command.CommandText =
             @"
+                DELETE FROM Items
+                WHERE listID IN (
+	            SELECT Items.listID FROM Items i
+	            INNER JOIN Lists l
+		            ON (i.listID = l.listID)
+	            WHERE l.catID = $id);
                 DELETE FROM Lists WHERE catID = $id;
-                DELETE FROM Categories WHERE CatID = $id;";
+                DELETE FROM Can_View WHERE catID=$id;
+                DELETE FROM Categories WHERE catID = $id;";
             command.Parameters.AddWithValue("$id", catID.ToString());
             command.ExecuteNonQuery();
         }
@@ -390,7 +397,7 @@ namespace DodoPlanner.Services
             var command = Connection.CreateCommand();
             command.CommandText = "INSERT INTO Can_View VALUES ($username, $catID);";
             command.Parameters.AddWithValue("$username", username);
-            command.Parameters.AddWithValue("$catID", catID);
+            command.Parameters.AddWithValue("$catID", catID.ToString());
             command.ExecuteNonQuery();
         }
 
@@ -447,6 +454,21 @@ namespace DodoPlanner.Services
                 }
             }
                 return tasks;
+        }
+
+        public List<string> get_all_users()
+        {
+            List<string> users = new List<string>();
+            var command = Connection.CreateCommand();
+            command.CommandText = "SELECT username FROM Users;";
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    users.Add(reader.GetString(0));
+                }
+            }
+                return users;
         }
     }
 }
