@@ -1,4 +1,3 @@
-
 CREATE TABLE Categories(
   catID CHAR(36),
   catName VARCHAR(25),
