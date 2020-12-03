@@ -342,11 +342,12 @@ namespace DodoPlanner.Services
         public bool createAccount(string username, string password)
         {
             var command = Connection.CreateCommand();
-            command.CommandText = "SELECT username FROM Users WHERE username=$user;";
+            command.CommandText = "SELECT COUNT(username) FROM Users WHERE username=$user";
             command.Parameters.AddWithValue("$user", username);
             using (var reader = command.ExecuteReader())
             {
-                if (reader.Read())
+                reader.Read();
+                if(reader.GetInt16(0) == 0)
                 {
                     return false;
                 }
