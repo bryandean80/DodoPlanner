@@ -397,7 +397,12 @@ namespace DodoPlanner.Services
         {
             List<Category> catList = new List<Category>();
             var command = Connection.CreateCommand();
-            command.CommandText = "SELECT * FROM Can_View WHERE username=$username";
+            command.CommandText =
+                @"
+                SELECT Categories.*
+                FROM Categories
+                INNER JOIN Can_View ON Categories.catID = Can_View.catID
+                WHERE Can_View.username = $username;";
             command.Parameters.AddWithValue("$username", username);
             using (var reader = command.ExecuteReader())
             {
