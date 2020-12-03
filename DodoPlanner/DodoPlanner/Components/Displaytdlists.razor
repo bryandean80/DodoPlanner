@@ -12,7 +12,7 @@
  
  
 
-@foreach (var cat in tdlistservice.GetCategories())
+@foreach (var cat in tdlistservice.get_user_categories(cookie))
 {
     if (!newListTitles.ContainsKey(cat.Id))
     {
@@ -48,7 +48,7 @@
                                 <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu">
-                                @foreach (Category category in tdlistservice.GetCategories())
+                                @foreach (Category category in tdlistservice.get_user_categories(cookie))
                                 {
                                     <li><a class="btn btn-outliine-secondary" style="text-align: center; color: @category.Color;" href="#" value="@category.Id" @onclick="(e => { tdlist.CategoryId = category.Id; tdlistservice.editList(tdlist); })">@category.Name</a></li>
                                 }
@@ -103,10 +103,6 @@
 
     string cookie { get; set; }
 
-    public async void getcookie()
-    {
-        cookie = await JSRuntime.InvokeAsync<string>("getcookie", "username");
-    }
 
     Dictionary<Guid, string> newListTitles { get; set; }
     string newCategoryTitle { get; set; }
@@ -121,7 +117,7 @@
 
     void AddCategory()
     {
-        tdlistservice.AddCategory(newCategoryTitle, newCategoryColor);
+        tdlistservice.AddCategory(newCategoryTitle, newCategoryColor, cookie);
         newCategoryTitle = string.Empty;
     }
 
@@ -140,6 +136,7 @@
         base.OnInitialized();
         editMode = false;
         newListTitles = new Dictionary<Guid, string>();
+        cookie = "";
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
